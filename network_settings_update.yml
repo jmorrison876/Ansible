@@ -31,5 +31,7 @@
 
     - name: Bring up the connection
       command: nmcli con up 'System enp0s8'
-
+    
+    - name: Change hostname
+      command: hostnamectl set-hostname centos2_1
 ...
