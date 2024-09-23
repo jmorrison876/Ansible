@@ -34,4 +34,12 @@
     
     - name: Change hostname
       command: hostnamectl set-hostname centos2_1
+
+    - name: Ensure %wheel group can execute commands without a password
+      lineinfile:
+        path: /etc/sudoers
+        regexp: '^# %wheel'
+        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
 ...
