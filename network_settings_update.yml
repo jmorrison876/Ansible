@@ -15,7 +15,7 @@
 
   tasks:
     - name: Set static IP address
-      command: nmcli con modify 'System enp0s8' ipv4.addresses 10.3.3.77/24
+      command: nmcli con modify 'System enp0s8' ipv4.addresses 10.3.3.71/24
 
     - name: Set gateway
       command: nmcli con modify 'System enp0s8' ipv4.gateway 10.3.3.1
@@ -33,7 +33,7 @@
       command: nmcli con up 'System enp0s8'
     
     - name: Change hostname
-      command: hostnamectl set-hostname centos2_1
+      command: hostnamectl set-hostname centos2_2
 
     - name: Ensure %wheel group can execute commands without a password
       lineinfile:
