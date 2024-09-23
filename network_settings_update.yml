@@ -14,22 +14,22 @@
     - variables.yml
 
   tasks:
-    - name: Configure and bring up static IP address for enp0s8
-      nmcli:
-        conn_name: 'System enp0s8'
-        state: present
-        ipv4:
-          address: 10.3.3.5/24
-          gateway: 10.3.3.1
-          dns: 8.8.8.8
-          method: manual
-          never_default: false
-      register: nmcli_result
+    - name: Set static IP address
+      command: nmcli con modify 'System enp0s8' ipv4.addresses 10.3.3.77/24
 
-    - name: Bring up the connection if changes were made
-      nmcli:
-        conn_name: 'System enp0s8'
-        state: up
-      when: nmcli_result.changed
+    - name: Set gateway
+      command: nmcli con modify 'System enp0s8' ipv4.gateway 10.3.3.1
+
+    - name: Set never-default to false
+      command: nmcli con modify 'System enp0s8' ipv4.never-default true
+
+    - name: Set DNS
+      command: nmcli con modify 'System enp0s8' ipv4.dns 8.8.8.8
+
+    - name: Set IPv4 method to manual
+      command: nmcli con modify 'System enp0s8' ipv4.method manual
+
+    - name: Bring up the connection
+      command: nmcli con up 'System enp0s8'
 
 ...
