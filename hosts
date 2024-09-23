@@ -1,0 +1,8 @@
+[control]
+192.168.1.77 ansible_connection=local
+
+[servers]
+192.168.1.26
+
+[servers:vars]
+ansible_user=root
