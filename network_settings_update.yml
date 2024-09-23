@@ -1,5 +1,45 @@
 ---
-- name: Network Configuration
-
+# YAML documents begin with the document separator ---
+ 
+# The minus in YAML this indicates a list item.  The playbook contains a list
+# of plays, with each play being a dictionary
+-
+ 
+  # Hosts: where our play will run and options it will run with
   hosts: servers
+  gather_facts: True
+ 
+  # Vars: variables that will apply to the play, on all target systems
+  vars_files:
+    - variables.yml
+
+  tasks:
+    - name: Set static IP address
+      command: nmcli con modify 'System enp0s8' ipv4.addresses 10.3.3.71/24
+
+    - name: Set gateway
+      command: nmcli con modify 'System enp0s8' ipv4.gateway 10.3.3.1
+
+    - name: Set never-default to false
+      command: nmcli con modify 'System enp0s8' ipv4.never-default true
+
+    - name: Set DNS
+      command: nmcli con modify 'System enp0s8' ipv4.dns 8.8.8.8
+
+    - name: Set IPv4 method to manual
+      command: nmcli con modify 'System enp0s8' ipv4.method manual
+
+    - name: Bring up the connection
+      command: nmcli con up 'System enp0s8'
+    
+    - name: Change hostname
+      command: hostnamectl set-hostname centos2_2
+
+    - name: Ensure %wheel group can execute commands without a password
+      lineinfile:
+        path: /etc/sudoers
+        regexp: '^# %wheel'
+        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
 ...
